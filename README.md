@@ -114,12 +114,13 @@ The vault works at any tier. Higher tiers add capabilities.
 
 | Tier | What | Install |
 |------|------|---------|
-| **0 — Essential** | Git, Claude Code | Required |
-| **1 — Core vault** | Obsidian | `brew install --cask obsidian` |
+| **0 — Essential** | Git, Claude Code, Obsidian | See Prerequisites above |
+| **1 — Core CLI** | ripgrep, gh, jq, Quarto, Pandoc | `brew install ripgrep gh jq pandoc && brew install --cask quarto` |
 | **2 — Knowledge graph** | Python 3 + PyYAML, Apache Jena | `brew install jena && pip install pyyaml` |
 | **3 — Fast search** | Obsidian CLI | Built into Obsidian 1.12+. Settings > General > CLI |
-| **4 — Google integration** | GWS skills | Google account + API setup (see [Integration Ecosystem](03%20-%20Resources/Obsidian%20Reference/Integration%20Ecosystem.md)) |
-| **5 — Premium tools** | Readwise, Todoist, etc. | Optional paid subscriptions (free alternatives documented) |
+| **4 — Obsidian skills** | [kepano/obsidian-skills](https://github.com/kepano/obsidian-skills) + defuddle | `brew install node && npm install -g defuddle-cli` then install plugin (see [SETUP.md](SETUP.md)) |
+| **5 — Google Workspace** | GWS skills | Google account + API setup (see [Integration Ecosystem](03%20-%20Resources/Obsidian%20Reference/Integration%20Ecosystem.md)) |
+| **6 — Premium tools** | Readwise, Todoist, etc. | Optional paid subscriptions (free alternatives documented) |
 
 ### Installing Tier 2 (Knowledge Graph)
 

@@ -146,27 +146,60 @@ obsidian search query="test" limit=5
 
 ---
 
-## Tier 4 — Node.js Ecosystem (recommended for skills)
+## Tier 4 — Claude Code Plugins and Obsidian Skills (strongly recommended)
 
-Required for installing additional Claude Code skills from the marketplace and for some skill tools.
+These extend Claude Code with skills it needs to work effectively with Obsidian vaults. Requires Node.js.
 
 ```bash
 brew install node
 ```
 
-### Skill management
-```bash
-# Install the skill finder (discovers and installs community skills)
-npx @anthropic-ai/claude-code-skills find-skills
+### Obsidian Skills (from kepano/obsidian-skills)
 
-# Install Google Workspace skills
-npx @anthropic-ai/claude-code-skills install gws
+**This is the most important external skill install.** It teaches Claude Code how to use Obsidian-specific syntax (wikilinks, callouts, frontmatter properties) and the Obsidian CLI.
+
+```bash
+# In a Claude Code session, run:
+/install-plugin obsidian-skills
 ```
 
-### Useful npm tools
+Or install from the command line:
 ```bash
-npm install -g defuddle-cli    # Clean web page extraction (strips navigation/clutter)
+claude plugins install obsidian@obsidian-skills --source https://github.com/kepano/obsidian-skills
 ```
+
+This installs 5 skills:
+- **`obsidian:obsidian-markdown`** — Wikilinks, embeds, callouts, properties, and Obsidian-specific syntax
+- **`obsidian:obsidian-cli`** — The Obsidian CLI for search, read, tasks, backlinks, and more
+- **`obsidian:defuddle`** — Clean web page extraction (strips navigation/ads to save tokens)
+- **`obsidian:json-canvas`** — Create and edit Obsidian Canvas files
+- **`obsidian:obsidian-bases`** — Database-like views of notes
+
+**Dependency**: The defuddle skill requires the defuddle CLI:
+```bash
+npm install -g defuddle-cli
+```
+
+### Recommended Vault Skills
+
+These three skills ship in the template's `.claude/skills/` directory but depend on external tools:
+
+| Skill | What it does | Dependency |
+|-------|-------------|-----------|
+| `/alphaxiv-paper-lookup` | Look up arXiv papers with AI summaries | None — uses web |
+| `/notebooklm` | Google NotebookLM API for research synthesis | Google account |
+| `/quarto` | Render documents to PDF, HTML, slides | `brew install --cask quarto` |
+
+### Superpowers Plugin (for code repos)
+
+When working in git repos (not the vault), the Superpowers plugin adds project planning and code analysis capabilities:
+
+```bash
+# Install in a Claude Code session within a git repo:
+/install-plugin superpowers
+```
+
+This is how you get repo-level project planning that complements vault-level planning. See the Cross-Repo Workflow section in the README.
 
 ---
 

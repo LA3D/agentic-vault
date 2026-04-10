@@ -32,9 +32,17 @@ which arq >/dev/null 2>&1 && echo "✓ jena/arq" || echo "✗ jena (needed for K
 python3 -c "import yaml" 2>/dev/null && echo "✓ pyyaml" || echo "✗ pyyaml (needed for KG — pip install pyyaml)"
 which quarto >/dev/null 2>&1 && echo "✓ quarto" || echo "✗ quarto (strongly recommended — brew install --cask quarto)"
 which pandoc >/dev/null 2>&1 && echo "✓ pandoc" || echo "✗ pandoc (recommended — brew install pandoc)"
-which node >/dev/null 2>&1 && echo "✓ node" || echo "✗ node (needed for skill marketplace — brew install node)"
+which node >/dev/null 2>&1 && echo "✓ node" || echo "✗ node (needed for plugins/skills — brew install node)"
 which npx >/dev/null 2>&1 && echo "✓ npx" || echo "✗ npx (comes with node)"
+which defuddle >/dev/null 2>&1 && echo "✓ defuddle" || echo "✗ defuddle (needed for web extraction — npm install -g defuddle-cli)"
 obsidian help >/dev/null 2>&1 && echo "✓ obsidian CLI" || echo "○ obsidian CLI (enable in Obsidian Settings → General → CLI)"
+```
+
+Also check for Claude Code plugins (these can't be checked via `which` — check the plugin cache):
+
+```bash
+# Check for Obsidian skills plugin
+ls ~/.claude/plugins/cache/obsidian-skills/ >/dev/null 2>&1 && echo "✓ obsidian-skills plugin" || echo "✗ obsidian-skills plugin (strongly recommended — see SETUP.md Tier 4)"
 ```
 
 Present the results and offer to help install missing tools:
@@ -42,6 +50,7 @@ Present the results and offer to help install missing tools:
 > "Here's what I found on your system. The vault works with just git + Claude Code, but more tools unlock more capabilities. See `SETUP.md` for the full tier guide."
 
 **If critical tools are missing** (git), stop and help install them before proceeding.
+**If obsidian-skills plugin is missing**, strongly recommend installing it — it teaches Claude how to use Obsidian syntax and the CLI.
 **If recommended tools are missing** (ripgrep, jena, node), note them but continue — the user can install later.
 
 ---
