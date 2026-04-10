@@ -39,7 +39,8 @@ After installing, open this folder as a vault in Obsidian.
 These make Claude Code significantly more effective. Install them all at once:
 
 ```bash
-brew install ripgrep gh jq bat
+brew install ripgrep gh jq bat pandoc
+brew install --cask quarto
 ```
 
 | Tool | What it does | Why it matters |
@@ -48,6 +49,8 @@ brew install ripgrep gh jq bat
 | **gh** | GitHub CLI | Create repos, PRs, issues from the terminal |
 | **jq** | JSON processor | Query and transform JSON (used by KG pipeline, API responses) |
 | **bat** | Syntax-highlighted cat | Better file viewing in terminal |
+| **Quarto** | Document rendering (PDF, HTML, slides, DOCX) | The `/quarto` skill uses this to produce publication-quality output from vault content. Free and open source. |
+| **Pandoc** | Document format conversion | Lower-level converter that Quarto builds on. Also useful standalone for quick format conversions. |
 
 ---
 
@@ -148,25 +151,7 @@ The `gws-shared` skill has detailed setup instructions. Run `/gws-shared` in Cla
 
 ---
 
-## Tier 6 — Document Rendering (optional, free)
-
-### Quarto
-For rendering vault content to PDF, HTML, slides, or Word documents.
-
-```bash
-brew install --cask quarto
-```
-
-### Pandoc
-Lower-level document conversion (Quarto uses Pandoc internally).
-
-```bash
-brew install pandoc
-```
-
----
-
-## Tier 7 — Premium Integrations (optional, paid)
+## Tier 6 — Premium Integrations (optional, paid)
 
 These accelerate specific workflows. Free alternatives exist for each — see [[Integration Ecosystem]].
 
@@ -193,18 +178,23 @@ For a complete one-command setup of Tiers 0-2 plus useful tools:
 
 ```bash
 # Save as Brewfile, then run: brew bundle
+# Tier 0 — Essential
 brew "git"
+cask "obsidian"
+# Tier 1 — Core CLI tools
 brew "ripgrep"
 brew "gh"
 brew "jq"
 brew "bat"
-brew "jena"
-brew "node"
 brew "pandoc"
+cask "quarto"
+# Tier 2 — Knowledge Graph
+brew "jena"
+# Tier 4 — Node.js ecosystem
+brew "node"
+# Useful extras
 brew "tree"
 brew "fzf"
-cask "obsidian"
-cask "quarto"
 ```
 
 ```bash

@@ -30,6 +30,8 @@ which gh >/dev/null 2>&1 && echo "✓ gh" || echo "✗ gh (recommended — brew 
 which jq >/dev/null 2>&1 && echo "✓ jq" || echo "✗ jq (recommended — brew install jq)"
 which arq >/dev/null 2>&1 && echo "✓ jena/arq" || echo "✗ jena (needed for KG — brew install jena)"
 python3 -c "import yaml" 2>/dev/null && echo "✓ pyyaml" || echo "✗ pyyaml (needed for KG — pip install pyyaml)"
+which quarto >/dev/null 2>&1 && echo "✓ quarto" || echo "✗ quarto (strongly recommended — brew install --cask quarto)"
+which pandoc >/dev/null 2>&1 && echo "✓ pandoc" || echo "✗ pandoc (recommended — brew install pandoc)"
 which node >/dev/null 2>&1 && echo "✓ node" || echo "✗ node (needed for skill marketplace — brew install node)"
 which npx >/dev/null 2>&1 && echo "✓ npx" || echo "✗ npx (comes with node)"
 obsidian help >/dev/null 2>&1 && echo "✓ obsidian CLI" || echo "○ obsidian CLI (enable in Obsidian Settings → General → CLI)"
