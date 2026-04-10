@@ -191,6 +191,13 @@ scripts/kg/build-graph.sh --stats
 
 Use Anthropic's built-in `/skill-creator` to build domain-specific skills for your work. The pattern: your domain skill handles domain decisions → delegates note creation to `/encode`. See the existing skills in `.claude/skills/` for examples.
 
+The vault includes reference documentation on how Claude Code's memory and skill systems work:
+- `03 - Resources/context/claude-code-memory-docs.md` — How CLAUDE.md, rules, and auto memory work together
+- `03 - Resources/context/claude-code-skills-docs.md` — How to create, configure, and distribute skills
+- `03 - Resources/context/claude-code-extensions-docs.md` — When to use CLAUDE.md vs rules vs skills vs hooks
+
+Claude reads these when modifying vault configuration or building new skills, so it understands the system it's extending.
+
 ## Cross-Repo Workflow
 
 When working in a git repo, give Claude access to your vault:
