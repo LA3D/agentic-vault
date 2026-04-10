@@ -65,14 +65,35 @@ The task management rule recommends planning no more than 50% of your time. Pull
 
 ## Adapting the Patterns to Your Style
 
-These patterns encode one person's cognitive strategies. Yours may differ. Some things to consider:
+These patterns encode one person's cognitive strategies. Yours may differ. The vault is designed to be adapted — the structure is the scaffold, your preferences fill it in.
+
+### Where Your Cognitive Preferences Live
+
+The vault stores your working style in several places, each serving a different purpose:
+
+| File | What it controls | How to change |
+|------|-----------------|---------------|
+| `.claude/rules/owner-context.md` | Interaction style — how Claude talks to you, what to explain vs. assume, your expertise level | Edit directly or re-run `/onboarding` |
+| `03 - Resources/context/ai_ese.md` | Writing patterns to avoid — what makes text feel artificial *to you* | Add patterns that bother you, remove ones you don't care about |
+| `03 - Resources/context/writing_style_guide.md` | Positive style preferences — how you want prose and code written | Customize for your voice and domain conventions |
+| `.claude/rules/discipline-gates.md` | Verification checkpoints — which shortcuts to block | Adjust gate strictness to match your risk tolerance |
+
+Claude reads these every session. They're the "personality layer" of the vault — the same structural skills (encode, retrieve, review) behave differently based on these preferences.
+
+### Specific Dimensions to Tune
 
 - **Session length**: If you find yourself depleted after 90 minutes, set that as your default session length. Run `/session-retro` before you're exhausted, not after.
 - **Mode time-boxes**: The 20-minute suggestion per research mode is a starting point. Some people think in longer arcs; adjust to what sustains your focus.
 - **Verification depth**: `--draft` mode in `/review-note` is lighter than `--final`. Use draft during exploration, final before publishing or sharing.
 - **Parallel work**: The vault supports multiple projects, but the research on AI intensification suggests limiting active threads. Consider focusing on one project per session rather than context-switching between three.
+- **Communication style**: Some people want Claude to push back and debate. Others want it concise and deferential. Set this in `owner-context.md` and Claude adjusts.
+- **Domain expertise**: If you're an expert in a field, tell Claude in `owner-context.md` so it doesn't over-explain things you already know. If you're learning a new domain, note that too — Claude adjusts its explanation depth.
 
-The onboarding skill populates `owner-context.md` with your interaction preferences. As you learn what works for you, update that file — Claude Code reads it every session and adapts accordingly.
+### The Style Guides as Cognitive Load Reduction
+
+The style guides (`ai_ese.md` and `writing_style_guide.md`) aren't just aesthetic preferences — they're cognitive load reducers. Every AI-ese phrase Claude avoids is one you don't have to mentally edit while reading. Every domain term it uses correctly is one you don't have to correct. Over hundreds of notes, this compounds.
+
+Start with the defaults, then refine as you notice patterns that bother you. The `/review-note` skill checks against these files, so they actively prevent drift rather than just documenting ideals.
 
 ---
 
@@ -81,4 +102,6 @@ The onboarding skill populates `owner-context.md` with your interaction preferen
 - `.claude/rules/discipline-gates.md` — The specific gates and rationalizations
 - `.claude/skills/research-session/SKILL.md` — The 5-mode research session structure
 - `.claude/skills/session-retro/SKILL.md` — End-of-session reflection pattern
+- `03 - Resources/context/ai_ese.md` — AI writing patterns to avoid (customize)
+- `03 - Resources/context/writing_style_guide.md` — Positive style preferences (customize)
 - [[Vault Architecture]] — How the skill layers implement a cognitive architecture
