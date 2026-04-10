@@ -37,6 +37,7 @@ Knowledge organized by topic. Each topic area has a MOC (Map of Content) as its 
 - (Your MOCs will be listed here as you create them)
 
 ### Vault Reference
+- [[Memory Architecture - Why Different Kinds of Memory]] — Four memory types and how this vault implements them
 - [[Why PARA and How We Modify It]] — Why this structure, what we changed, how the Router enforces it
 - [[Managing Cognitive Load with AI Agents]] — Why the vault imposes structure on AI work sessions
 - [[How Progressive Disclosure Works]] — How Claude navigates in layers

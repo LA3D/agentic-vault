@@ -18,6 +18,8 @@ A **linked knowledge system** organized around Areas of Focus (Pullein/GAPRA fra
 
 **Architecture**: See `[[Vault Architecture]]` for the full structural reference.
 
+**Memory design**: This vault implements four memory types from the CoALA cognitive architecture (Sumers et al. 2023): working memory (CLAUDE.md + rules), procedural memory (skills), episodic memory (auto memory + daily notes), semantic memory (typed vault notes + KG). See `[[Memory Architecture - Why Different Kinds of Memory]]` for why they're separate and how they work together.
+
 ---
 
 ## Navigation [CRITICAL]

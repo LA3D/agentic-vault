@@ -178,6 +178,8 @@ scripts/kg/build-graph.sh --stats
 
 ## Key Concepts
 
+- **Four Memory Types**: The vault implements a cognitive architecture (CoALA, Sumers et al. 2023) with four distinct kinds of memory: working memory (CLAUDE.md + rules), procedural memory (skills), episodic memory (auto memory + daily notes), and semantic memory (typed vault notes + knowledge graph). They're separate because they have different access patterns, lifespans, and costs. See [Memory Architecture](03%20-%20Resources/Obsidian%20Reference/Memory%20Architecture%20-%20Why%20Different%20Kinds%20of%20Memory.md).
+
 - **Progressive Disclosure**: Claude navigates in layers (VAULT-INDEX → MOC → note), not by reading everything. See [How Progressive Disclosure Works](03%20-%20Resources/Obsidian%20Reference/How%20Progressive%20Disclosure%20Works.md).
 
 - **Typed Relationships**: Frontmatter edge fields (`up:`, `concept:`, `source:`, `extends:`, etc.) create a knowledge graph that Claude can query via SPARQL. See [Vault Vocabulary](03%20-%20Resources/Obsidian%20Reference/Vault%20Vocabulary.md).
