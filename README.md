@@ -9,6 +9,21 @@ This vault implements a cognitive architecture where:
 - **Claude Code** structures, cross-links, and maintains the knowledge
 - **The vault** is the persistent shared memory between sessions
 
+### Built on Claude Code's Architecture
+
+This template is specifically built to work with **Claude Code's agent, hook, skill, and memory architecture**. It relies on:
+
+- **CLAUDE.md + `.claude/rules/`** — Claude Code's instruction system, loaded at session start ([docs](https://code.claude.com/docs/en/memory))
+- **`.claude/skills/`** — on-demand capabilities that Claude loads when relevant ([docs](https://code.claude.com/docs/en/skills))
+- **Hooks** — lifecycle events that trigger validation and advisory checks ([docs](https://code.claude.com/docs/en/hooks))
+- **Auto memory** — Claude's own learning notes that persist across sessions
+- **Subagent memory** — persistent memory for skill subagents (like the encode Router)
+- **`--add-dir`** — cross-directory access for bridging vault and code repos
+
+These are Claude Code-specific features. The vault won't work the same way with other coding agents (Cursor, Windsurf, Copilot, etc.) because they have different memory, skill, and hook systems.
+
+That said, the **principles are transferable**: PARA organization, typed frontmatter relationships, progressive disclosure navigation, a knowledge graph built from structured metadata, discipline gates for cognitive load management — these patterns don't depend on Claude Code. If you're building an agentic memory system on a different platform, the architecture docs in `03 - Resources/Obsidian Reference/` describe the design patterns independent of the implementation. The reference docs in `03 - Resources/context/` document the specific Claude Code mechanisms this template builds on.
+
 ### Why PARA?
 
 The vault uses a modified [PARA](https://fortelabs.com/blog/para/) system (Projects, Areas, Resources, Archive) because it gives Claude Code unambiguous routing rules for every piece of information. The `/encode` skill's Router maps note types to PARA categories automatically — a concept note goes in Resources, a project plan goes in Projects, a fleeting thought goes in Watching.
