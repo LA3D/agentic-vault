@@ -21,9 +21,43 @@ brew install git
 ```
 
 ### Claude Code
-Install via Anthropic's instructions. Requires an Anthropic API subscription.
 
-Available as: CLI (`claude`), VS Code extension, JetBrains extension, desktop app, or web app.
+Claude Code is Anthropic's agentic coding tool — it's the agent that operates inside this vault. It reads your files, creates notes, runs skills, and manages the knowledge graph. You need two things:
+
+**1. An Anthropic account with API access**
+
+Sign up at https://console.anthropic.com. You'll need a paid plan (Pro or Team) — Claude Code uses the API, which requires billing. The Max plan ($100/mo) includes Claude Code usage directly; otherwise you pay per-token via the API.
+
+**2. Install Claude Code**
+
+The recommended install is the CLI:
+
+```bash
+# macOS / Linux
+npm install -g @anthropic-ai/claude-code
+
+# Verify
+claude --version
+```
+
+If you don't have npm yet, install Node.js first (`brew install node`).
+
+Claude Code is also available as:
+- **VS Code extension** — search "Claude Code" in the extensions marketplace
+- **JetBrains extension** — search "Claude Code" in the plugin marketplace  
+- **Desktop app** (macOS/Windows) — download from https://claude.ai/download
+- **Web app** — https://claude.ai/code
+
+The CLI is recommended for this vault because skills (`/encode`, `/onboarding`, etc.) work best in the terminal.
+
+**3. Authenticate**
+
+```bash
+claude
+# Follow the prompts to log in with your Anthropic account
+```
+
+Once authenticated, Claude Code stores credentials locally. You won't need to log in again on this machine.
 
 ### Obsidian
 ```bash
