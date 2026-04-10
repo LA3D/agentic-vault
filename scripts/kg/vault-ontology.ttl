@@ -1,0 +1,327 @@
+@prefix vault:   <https://example.com/vault/ontology#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+# =============================================================================
+# Vault Ontology — Minimal SKOS + RDFS vocabulary
+#
+# Pay-as-you-go: every type and property gets a definition and notation.
+# No class hierarchy, no reasoning requirements. Evolve as needed.
+#
+# This file is the vocabulary source of truth. The skill reads it to
+# understand what queries are possible. SHACL shapes validate against it.
+# The @context maps frontmatter syntax to these terms.
+# =============================================================================
+
+# =============================================================================
+# Note Type Classes
+#
+# Each type is both rdfs:Class (for rdf:type / sh:targetClass) and
+# skos:Concept (for definitions, labels, notation). OWL 2 punning
+# makes this formally sound.
+#
+# skos:notation = the frontmatter string value (what users write in YAML)
+# skos:definition = what this type means
+# skos:scopeNote = usage guidance
+# =============================================================================
+
+# --- Knowledge Notes ---
+
+vault:TheoryNote a rdfs:Class, skos:Concept ;
+    skos:prefLabel "Theory Note"@en ;
+    skos:notation "theory-note" ;
+    skos:definition "Theoretical framework or model — claims about how things work."@en ;
+    skos:scopeNote "Typical folder: 03 - Resources/[topic]/"@en .
+
+vault:ConceptNote a rdfs:Class, skos:Concept ;
+    skos:prefLabel "Concept Note"@en ;
+    skos:notation "concept-note" ;
+    skos:definition "Specific concept or idea — a named thing in a domain."@en ;
+    skos:scopeNote "Typical folder: 03 - Resources/[topic]/"@en .
+
+vault:MethodNote a rdfs:Class, skos:Concept ;
+    skos:prefLabel "Method Note"@en ;
+    skos:notation "method-note" ;
+    skos:definition "Methodology, technique, or approach — how to do something."@en ;
+    skos:scopeNote "Typical folder: 03 - Resources/[topic]/Methods/"@en .
+
+vault:Finding a rdfs:Class, skos:Concept ;
+    skos:prefLabel "Finding"@en ;
+    skos:notation "finding" ;
+    skos:definition "Experimental result or empirical observation."@en ;
+    skos:scopeNote "Typical folder: 03 - Resources/[topic]/"@en .
+
+vault:ImplementationNote a rdfs:Class, skos:Concept ;
+    skos:prefLabel "Implementation Note"@en ;
+    skos:notation "implementation-note" ;
+    skos:definition "Code repository, experiment, or system build."@en ;
+    skos:scopeNote "Typical folder: 03 - Resources/[topic]/Implementation/"@en .
+
+# --- Literature ---
+
+vault:LiteratureNote a rdfs:Class, skos:Concept ;
+    skos:prefLabel "Literature Note"@en ;
+    skos:notation "literature-note" ;
+    skos:definition "Note about a research paper. Use literatureType: for finer classification."@en ;
+    skos:scopeNote "Typical folder: 03 - Resources/Literature/"@en .
+
+vault:BookNote a rdfs:Class, skos:Concept ;
+    skos:prefLabel "Book Note"@en ;
+    skos:notation "book-note" ;
+    skos:definition "Note about a book, typically from Readwise highlights or manual reading."@en ;
+    skos:scopeNote "Typical folder: 03 - Resources/Literature/"@en .
+
+# --- Entities (People and Organizations) ---
+
+vault:Person a rdfs:Class, skos:Concept ;
+    skos:prefLabel "Person"@en ;
+    skos:notation "person" ;
+    skos:definition "A person tracked in the vault — collaborator, contact, or other non-author individual."@en ;
+    skos:scopeNote "Typical folder: 03 - Resources/Literature/ or 03 - Resources/People/. Use for collaborators, contacts, and people known through work rather than authorship."@en .
+
+vault:AuthorNote a rdfs:Class, skos:Concept ;
+    rdfs:subClassOf vault:Person ;
+    skos:prefLabel "Author Note"@en ;
+    skos:notation "author-note" ;
+    skos:definition "Author profile linking their works across the vault. A person known primarily through their writing, research, or thought leadership."@en ;
+    skos:scopeNote "Typical folder: 03 - Resources/Literature/. Authors are a subclass of Person — they inherit all Person properties and can also be collaborators."@en .
+
+vault:Organization a rdfs:Class, skos:Concept ;
+    skos:prefLabel "Organization"@en ;
+    skos:notation "organization" ;
+    skos:definition "Institution, lab, company, or group. Used for affiliations and institutional context."@en ;
+    skos:scopeNote "Create only for organizations that recur across multiple notes or projects. Examples: Anthropic, CERN, W3C."@en .
+
+# --- External ---
+
+vault:ExternalResource a rdfs:Class, skos:Concept ;
+    skos:prefLabel "External Resource"@en ;
+    skos:notation "external-resource" ;
+    skos:definition "Blog post, article, tool review, or other external content."@en ;
+    skos:scopeNote "Typical folder: External Resources/"@en .
+
+vault:Tool a rdfs:Class, skos:Concept ;
+    skos:prefLabel "Tool"@en ;
+    skos:notation "tool" ;
+    skos:definition "Software tool or system description."@en ;
+    skos:scopeNote "Typical folder: External Resources/"@en .
+
+# --- Navigation ---
+
+vault:MOC a rdfs:Class, skos:Concept ;
+    skos:prefLabel "Map of Content"@en ;
+    skos:notation "moc" ;
+    skos:definition "Topic hub linking related notes in a domain."@en ;
+    skos:scopeNote "Placed in the relevant topic folder. Listed in VAULT-INDEX.md."@en .
+
+vault:Index a rdfs:Class, skos:Concept ;
+    skos:prefLabel "Index"@en ;
+    skos:notation "index" ;
+    skos:definition "Sub-index or catalog of notes in an area."@en ;
+    skos:scopeNote "Examples: LITERATURE-INDEX.md, EXTERNAL-INDEX.md."@en .
+
+# --- Area ---
+
+vault:Area a rdfs:Class, skos:Concept ;
+    skos:prefLabel "Area of Focus"@en ;
+    skos:notation "area" ;
+    skos:definition "Ongoing responsibility with a standard to maintain. Foundation of the Pullein/GAPRA methodology."@en ;
+    skos:scopeNote "Typical folder: 02 - Areas of Focus/. Eight areas defined."@en .
+
+# --- Project ---
+
+vault:Project a rdfs:Class, skos:Concept ;
+    skos:prefLabel "Project"@en ;
+    skos:notation "project" ;
+    skos:definition "Time-bound effort serving an area of focus."@en ;
+    skos:scopeNote "Typical folder: 01 - Projects/"@en .
+
+vault:Plan a rdfs:Class, skos:Concept ;
+    skos:prefLabel "Plan"@en ;
+    skos:notation "plan" ;
+    skos:definition "PLAN.md with phases, timeline, and success criteria for a project."@en ;
+    skos:scopeNote "Typical folder: 01 - Projects/[subfolder]/"@en .
+
+vault:Decision a rdfs:Class, skos:Concept ;
+    skos:prefLabel "Decision"@en ;
+    skos:notation "decision" ;
+    skos:definition "Decision log recording architectural or design choices for a project."@en ;
+    skos:scopeNote "Typical folder: 01 - Projects/[subfolder]/"@en .
+
+# --- Reference ---
+
+vault:Reference a rdfs:Class, skos:Concept ;
+    skos:prefLabel "Reference"@en ;
+    skos:notation "reference" ;
+    skos:definition "General reference material."@en ;
+    skos:scopeNote "Typical folder: 03 - Resources/Obsidian Reference/"@en .
+
+vault:Workflow a rdfs:Class, skos:Concept ;
+    skos:prefLabel "Workflow"@en ;
+    skos:notation "workflow" ;
+    skos:definition "Documented process or workflow."@en ;
+    skos:scopeNote "Typical folder: 03 - Resources/"@en .
+
+vault:CourseNotes a rdfs:Class, skos:Concept ;
+    skos:prefLabel "Course Notes"@en ;
+    skos:notation "course-notes" ;
+    skos:definition "Notes from a course or tutorial."@en ;
+    skos:scopeNote "Typical folder: Courses/"@en .
+
+# --- Other ---
+
+vault:RecipeCollection a rdfs:Class, skos:Concept ;
+    skos:prefLabel "Recipe Collection"@en ;
+    skos:notation "recipe-collection" ;
+    skos:definition "Recipes and cooking notes."@en ;
+    skos:scopeNote "Typical folder: Cooking & Recipes/"@en .
+
+vault:FleetingNote a rdfs:Class, skos:Concept ;
+    skos:prefLabel "Fleeting Note"@en ;
+    skos:notation "fleeting-note" ;
+    skos:definition "Quick capture, unsorted thoughts."@en ;
+    skos:scopeNote "Typical folder: Inbox/"@en .
+
+# =============================================================================
+# Edge Field Properties
+#
+# Relationship types used in Breadcrumbs frontmatter.
+# Domain/range use owl:unionOf where multiple types are valid.
+# "any" domain/range = no constraint declared (omitted).
+# =============================================================================
+
+# --- Hierarchy ---
+
+vault:up a rdf:Property ;
+    rdfs:label "up"@en ;
+    skos:definition "Parent in the vault hierarchy. Points to the MOC, index, or area this note belongs under."@en ;
+    rdfs:range [ owl:unionOf ( vault:MOC vault:Index vault:Area ) ] ;
+    skos:editorialNote "Transitive closure materialized by build-graph.sh via CONSTRUCT query."@en .
+
+vault:area a rdf:Property ;
+    rdfs:label "area"@en ;
+    skos:definition "Area of focus this note serves. Connects projects and MOCs to one of eight Pullein areas."@en ;
+    rdfs:domain [ owl:unionOf ( vault:Project vault:MOC ) ] ;
+    rdfs:range vault:Area .
+
+# --- Intellectual Structure ---
+
+vault:concept a rdf:Property ;
+    rdfs:label "concept"@en ;
+    skos:definition "Concept discussed or realized by this note. Links literature and implementations to the concepts they address."@en ;
+    rdfs:domain [ owl:unionOf ( vault:LiteratureNote vault:BookNote vault:ImplementationNote vault:ExternalResource ) ] ;
+    rdfs:range [ owl:unionOf ( vault:ConceptNote vault:TheoryNote vault:MethodNote ) ] ;
+    owl:inverseOf vault:conceptOf .
+
+vault:conceptOf a rdf:Property ;
+    rdfs:label "concept of"@en ;
+    skos:definition "Inverse of concept. Materialized: if A concept B, then B conceptOf A."@en ;
+    owl:inverseOf vault:concept ;
+    skos:editorialNote "Materialized by build-graph.sh. Not asserted in frontmatter."@en .
+
+vault:source a rdf:Property ;
+    rdfs:label "source"@en ;
+    skos:definition "Literature source cited by this note."@en ;
+    rdfs:range [ owl:unionOf ( vault:LiteratureNote vault:BookNote ) ] .
+
+vault:extends a rdf:Property ;
+    rdfs:label "extends"@en ;
+    skos:definition "Builds upon another concept or theory. Indicates intellectual lineage."@en ;
+    rdfs:domain [ owl:unionOf ( vault:TheoryNote vault:ConceptNote vault:MethodNote ) ] ;
+    rdfs:range [ owl:unionOf ( vault:TheoryNote vault:ConceptNote vault:MethodNote ) ] .
+
+vault:supports a rdf:Property ;
+    rdfs:label "supports"@en ;
+    skos:definition "Validates or provides evidence for the target claim."@en ;
+    owl:inverseOf vault:supportedBy .
+
+vault:supportedBy a rdf:Property ;
+    rdfs:label "supported by"@en ;
+    skos:definition "Inverse of supports. Materialized: if A supports B, then B supportedBy A."@en ;
+    owl:inverseOf vault:supports ;
+    skos:editorialNote "Materialized by build-graph.sh. Not asserted in frontmatter."@en .
+
+vault:criticizes a rdf:Property ;
+    rdfs:label "criticizes"@en ;
+    skos:definition "Challenges or opposes the target claim."@en ;
+    owl:inverseOf vault:criticizedBy .
+
+vault:criticizedBy a rdf:Property ;
+    rdfs:label "criticized by"@en ;
+    skos:definition "Inverse of criticizes. Materialized: if A criticizes B, then B criticizedBy A."@en ;
+    owl:inverseOf vault:criticizes ;
+    skos:editorialNote "Materialized by build-graph.sh. Not asserted in frontmatter."@en .
+
+vault:implementation a rdf:Property ;
+    rdfs:label "implementation"@en ;
+    skos:definition "Code or system implementing this concept or theory."@en ;
+    rdfs:domain [ owl:unionOf ( vault:ConceptNote vault:TheoryNote vault:MethodNote ) ] ;
+    rdfs:range vault:ImplementationNote .
+
+vault:related a rdf:Property ;
+    rdfs:label "related"@en ;
+    skos:definition "Lateral connection between notes. Prefer specific edge fields (extends, supports, criticizes, concept) when a more precise relationship applies."@en ;
+    skos:editorialNote "Symmetric by convention. Catch-all — use sparingly."@en .
+
+# --- Entity Relationships ---
+
+vault:author a rdf:Property ;
+    rdfs:label "author"@en ;
+    skos:definition "Person who authored this work. Creates a typed edge from literature/book/external-resource to the author's Person or AuthorNote."@en ;
+    rdfs:domain [ owl:unionOf ( vault:LiteratureNote vault:BookNote vault:ExternalResource ) ] ;
+    rdfs:range vault:Person ;
+    owl:inverseOf vault:authorOf .
+
+vault:authorOf a rdf:Property ;
+    rdfs:label "author of"@en ;
+    skos:definition "Inverse of author. Materialized: if A has author B, then B authorOf A."@en ;
+    owl:inverseOf vault:author ;
+    skos:editorialNote "Materialized by build-graph.sh. Not asserted in frontmatter."@en .
+
+vault:affiliation a rdf:Property ;
+    rdfs:label "affiliation"@en ;
+    skos:definition "Organization a person is affiliated with."@en ;
+    rdfs:domain vault:Person ;
+    rdfs:range vault:Organization .
+
+vault:collaborator a rdf:Property ;
+    rdfs:label "collaborator"@en ;
+    skos:definition "Person collaborating on this project."@en ;
+    rdfs:domain vault:Project ;
+    rdfs:range vault:Person .
+
+# =============================================================================
+# Annotation Properties (non-edge)
+#
+# Properties that appear in frontmatter but don't create typed relationships
+# between notes. Used for metadata.
+# =============================================================================
+
+vault:tag a rdf:Property ;
+    rdfs:label "tag"@en ;
+    skos:definition "Frontmatter tag value. Tags are flat strings, not typed relationships."@en .
+
+vault:status a rdf:Property ;
+    rdfs:label "status"@en ;
+    skos:definition "Lifecycle status of a note (e.g., active, draft, archived)."@en .
+
+vault:timeline a rdf:Property ;
+    rdfs:label "timeline"@en ;
+    skos:definition "Expected timeline for a project."@en .
+
+# =============================================================================
+# Materialized Properties
+#
+# Properties computed by build-graph.sh materialization rules.
+# Not asserted in frontmatter. Declared here for agent comprehension.
+# =============================================================================
+
+vault:isHub a rdf:Property ;
+    rdfs:label "is hub"@en ;
+    skos:definition "Boolean flag materialized on notes with 10 or more inbound relationship edges. Indicates a navigation hub or key concept."@en ;
+    rdfs:range xsd:boolean ;
+    skos:editorialNote "Materialized by build-graph.sh hub detection rule."@en .

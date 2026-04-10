@@ -1,0 +1,28 @@
+{
+  "@context": {
+    "@base": "https://example.com/vault/notes/",
+    "vault": "https://example.com/vault/ontology#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+
+    "type":           "@type",
+    "up":             {"@id": "vault:up",             "@type": "@id"},
+    "area":           {"@id": "vault:area",           "@type": "@id"},
+    "concept":        {"@id": "vault:concept",        "@type": "@id"},
+    "source":         {"@id": "vault:source",         "@type": "@id"},
+    "extends":        {"@id": "vault:extends",        "@type": "@id"},
+    "supports":       {"@id": "vault:supports",       "@type": "@id"},
+    "criticizes":     {"@id": "vault:criticizes",     "@type": "@id"},
+    "implementation": {"@id": "vault:implementation", "@type": "@id"},
+    "related":        {"@id": "vault:related",        "@type": "@id"},
+    "author":         {"@id": "vault:author",         "@type": "@id"},
+    "affiliation":    {"@id": "vault:affiliation",    "@type": "@id"},
+    "collaborator":   {"@id": "vault:collaborator",   "@type": "@id"},
+    "tags":           {"@id": "vault:tag"},
+    "title":          {"@id": "dcterms:title"},
+    "created":        {"@id": "dcterms:created", "@type": "xsd:date"},
+    "status":         {"@id": "vault:status"},
+    "timeline":       {"@id": "vault:timeline"}
+  }
+}

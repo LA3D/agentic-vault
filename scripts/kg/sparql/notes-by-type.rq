@@ -1,0 +1,5 @@
+# Count notes grouped by type. Overview of vault composition.
+PREFIX vault: <https://example.com/vault/ontology#>
+SELECT ?type (COUNT(?note) AS ?count) WHERE {
+    ?note a ?type .
+} GROUP BY ?type ORDER BY DESC(?count)

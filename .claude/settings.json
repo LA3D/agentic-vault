@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Bash(git status)",
+      "Bash(git log*)",
+      "Bash(git diff*)",
+      "Bash(obsidian *)",
+      "Bash(arq *)",
+      "Bash(find *)"
+    ],
+    "deny": []
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Check what was just written. If the target path is under .claude/memory/ or .claude/projects/*/memory/: does this content contain structured knowledge (>500 words, wikilinks, domain reference material) that would benefit from typed edge connections and MOC placement? If yes, note this briefly — the content may belong in the vault via /encode rather than in memory. If the target path is under 03 - Resources/: does this new note have an up: field pointing to a MOC/index? If not, mention it may need /wire. If the target path is under .claude/plans/: this is a plan file — no advisory check needed. This is advisory — do not block."
+          }
+        ]
+      }
+    ]
+  }
+}

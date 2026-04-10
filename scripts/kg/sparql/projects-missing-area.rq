@@ -1,0 +1,8 @@
+# Find projects without an area of focus (Pullein compliance check).
+PREFIX vault: <https://example.com/vault/ontology#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+SELECT ?note ?title WHERE {
+    ?note a vault:Project .
+    ?note dcterms:title ?title .
+    FILTER NOT EXISTS { ?note vault:area ?area . }
+} ORDER BY ?title

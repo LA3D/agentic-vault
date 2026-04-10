@@ -1,0 +1,13 @@
+# Find the most-connected notes (highest inbound edge count). Navigation hubs and key concepts.
+PREFIX vault: <https://example.com/vault/ontology#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+SELECT ?title (COUNT(?src) AS ?inbound) WHERE {
+    ?src ?pred ?note .
+    ?note dcterms:title ?title .
+    FILTER(?pred NOT IN (
+        rdf:type, dcterms:title, dcterms:created,
+        vault:tag, vault:status, vault:timeline
+    ))
+    FILTER(isIRI(?note))
+} GROUP BY ?title ORDER BY DESC(?inbound) LIMIT 25

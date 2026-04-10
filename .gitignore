@@ -1,0 +1,18 @@
+# Generated KG files (rebuilt from source)
+scripts/kg/vault-graph.jsonld
+scripts/kg/vault-graph.ttl
+scripts/kg/vault-graph-full.ttl
+scripts/kg/validation-report.ttl
+scripts/kg/validation-summary.txt
+
+# Obsidian workspace (per-user UI state)
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/graph.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Claude Code transcripts (ephemeral)
+.claude/transcripts/

@@ -1,0 +1,33 @@
+# Full 2-hop neighborhood of a note: outgoing edges (1-hop), inverse incoming (1-hop), shared-concept siblings (2-hop). Replace NOTE_URI with full URI. Used by Retrieve contextual mode.
+PREFIX vault: <https://example.com/vault/ontology#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+SELECT DISTINCT ?neighbor ?neighborTitle ?neighborType ?path ?hopCount WHERE {
+    {
+        <NOTE_URI> ?outPred ?neighbor .
+        FILTER(?outPred IN (vault:concept, vault:source, vault:extends,
+                           vault:supports, vault:criticizes, vault:related,
+                           vault:implementation))
+        ?neighbor dcterms:title ?neighborTitle .
+        ?neighbor a ?neighborType .
+        BIND(REPLACE(STR(?outPred), ".*#", "") AS ?path)
+        BIND(1 AS ?hopCount)
+    } UNION {
+        ?neighbor ?inPred <NOTE_URI> .
+        FILTER(?inPred IN (vault:concept, vault:supports, vault:criticizes,
+                           vault:extends, vault:related, vault:up))
+        ?neighbor dcterms:title ?neighborTitle .
+        ?neighbor a ?neighborType .
+        BIND(CONCAT("inverse-", REPLACE(STR(?inPred), ".*#", "")) AS ?path)
+        BIND(1 AS ?hopCount)
+    } UNION {
+        <NOTE_URI> vault:concept ?sharedConcept .
+        ?neighbor vault:concept ?sharedConcept .
+        FILTER(?neighbor != <NOTE_URI>)
+        ?neighbor dcterms:title ?neighborTitle .
+        ?neighbor a ?neighborType .
+        BIND("shared-concept" AS ?path)
+        BIND(2 AS ?hopCount)
+    }
+    FILTER EXISTS { ?neighbor a ?anyType }
+} ORDER BY ?hopCount ?path ?neighborTitle
+LIMIT 30

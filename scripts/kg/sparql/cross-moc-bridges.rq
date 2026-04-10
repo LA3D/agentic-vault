@@ -1,0 +1,15 @@
+# Find notes that bridge two MOCs -- notes in a different MOC that reference notes in the anchor's MOC via concept/related/extends/supports edges. Replace NOTE_URI. Used by Retrieve exploratory mode.
+PREFIX vault: <https://example.com/vault/ontology#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+SELECT DISTINCT ?bridge ?bridgeTitle ?bridgeType ?bridgeMOCTitle WHERE {
+    <NOTE_URI> vault:up ?anchorMOC .
+    ?bridge vault:up ?bridgeMOC .
+    FILTER(?bridgeMOC != ?anchorMOC)
+    ?bridge ?pred ?anchorNeighbor .
+    ?anchorNeighbor vault:up ?anchorMOC .
+    FILTER(?pred IN (vault:concept, vault:related, vault:extends, vault:supports))
+    ?bridge dcterms:title ?bridgeTitle .
+    ?bridge a ?bridgeType .
+    ?bridgeMOC dcterms:title ?bridgeMOCTitle .
+    FILTER EXISTS { ?bridge a ?anyType }
+} LIMIT 10

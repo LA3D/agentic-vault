@@ -1,0 +1,9 @@
+# List all notes under a given area of focus. Replace AREA_SUBSTRING with the area name fragment (e.g. 'Research').
+PREFIX vault: <https://example.com/vault/ontology#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+SELECT ?note ?type ?title WHERE {
+    ?note vault:area ?area .
+    ?note a ?type .
+    ?note dcterms:title ?title .
+    FILTER(CONTAINS(STR(?area), "AREA_SUBSTRING"))
+} ORDER BY ?type ?title

@@ -1,0 +1,8 @@
+# Find intellectual lineage: theory notes that extend other theories.
+PREFIX vault: <https://example.com/vault/ontology#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+SELECT ?note ?noteTitle ?extends ?extendsTitle WHERE {
+    ?note vault:extends ?extends .
+    ?note dcterms:title ?noteTitle .
+    ?extends dcterms:title ?extendsTitle .
+} ORDER BY ?noteTitle

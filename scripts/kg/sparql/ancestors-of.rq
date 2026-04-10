@@ -1,0 +1,7 @@
+# Walk up the hierarchy from a note to all ancestors. Replace NOTE_SLUG with the URI slug.
+PREFIX vault: <https://example.com/vault/ontology#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+SELECT ?ancestor ?ancestorTitle WHERE {
+    <https://example.com/vault/notes/NOTE_SLUG> vault:up+ ?ancestor .
+    ?ancestor dcterms:title ?ancestorTitle .
+}
