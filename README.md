@@ -9,7 +9,15 @@ This vault implements a cognitive architecture where:
 - **Claude Code** structures, cross-links, and maintains the knowledge
 - **The vault** is the persistent shared memory between sessions
 
-The structure is based on the Pullein/GAPRA framework (Areas → Goals → Projects → Tasks) with typed frontmatter relationships that form a queryable knowledge graph.
+### Why PARA?
+
+The vault uses a modified [PARA](https://fortelabs.com/blog/para/) system (Projects, Areas, Resources, Archive) because it gives Claude Code unambiguous routing rules for every piece of information. The `/encode` skill's Router maps note types to PARA categories automatically — a concept note goes in Resources, a project plan goes in Projects, a fleeting thought goes in Watching.
+
+On top of PARA, we layer Carl Pullein's Areas of Focus framework: your 6-8 foundational life/work areas become the *strategic layer* that everything else connects to. Every project should serve an area. This connection is enforced by the Router, the `/audit` skill, and SHACL validation in the knowledge graph.
+
+We also add a **Watching** folder (`05 - Watching/`) for items you're monitoring but haven't committed to — a staging area between "interesting" and "active."
+
+See [Why PARA and How We Modify It](03%20-%20Resources/Obsidian%20Reference/Why%20PARA%20and%20How%20We%20Modify%20It.md) for the full rationale, including how the Router enforces the structure.
 
 ## Quick Start
 
