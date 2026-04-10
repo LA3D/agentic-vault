@@ -136,7 +136,7 @@ This vault works alongside your code projects. Two key patterns:
 
 **Two-level planning**: Vault-level plans (`01 - Projects/PLAN.md`) are strategic — research questions, goals, area connections. Repo-level plans (in git repos) are tactical — implementation, architecture. Use `/project-planning` in both contexts.
 
-**The `--add-dir` bridge**: When working in a git repo, run `claude --add-dir /path/to/this/vault` so Claude Code can reference vault knowledge while implementing code. Set up shell aliases for convenience.
+**The `--add-dir` bridge**: When working in a git repo, run `CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD=1 claude --add-dir /path/to/this/vault` so Claude Code can reference vault knowledge AND load this CLAUDE.md + rules. Without the env var, `--add-dir` gives file access but doesn't load vault instructions.
 
 **Building new skills**: Use Anthropic's built-in `/skill-creator` to build domain-specific skills. Domain skills make domain decisions → delegate note creation to `/encode`.
 

@@ -167,7 +167,7 @@ scripts/kg/build-graph.sh --stats
 
 - **Typed Relationships**: Frontmatter edge fields (`up:`, `concept:`, `source:`, `extends:`, etc.) create a knowledge graph that Claude can query via SPARQL. See [Vault Vocabulary](03%20-%20Resources/Obsidian%20Reference/Vault%20Vocabulary.md).
 
-- **Two-Level Planning**: Vault-level plans are strategic (goals, research questions). Repo-level plans are tactical (implementation). Bridge them with `claude --add-dir /path/to/vault`.
+- **Two-Level Planning**: Vault-level plans are strategic (goals, research questions). Repo-level plans are tactical (implementation). Bridge them with `--add-dir` (see Cross-Repo Workflow below).
 
 - **Cognitive Load Management**: AI agents can intensify work faster than you realize ([Ranganathan & Ye, 2026](https://simonwillison.net/2026/Feb/9/ai-intensifies-work/)). The vault's session modes, discipline gates, and retro patterns impose sustainable rhythm on AI-assisted work. See [Managing Cognitive Load](03%20-%20Resources/Obsidian%20Reference/Managing%20Cognitive%20Load%20with%20AI%20Agents.md).
 
@@ -197,11 +197,15 @@ When working in a git repo, give Claude access to your vault:
 
 ```bash
 # One-time alias (add to .bashrc/.zshrc)
-alias cc='claude --add-dir ~/Obsidian/my-vault'
+# The env var is required — without it, --add-dir gives file access
+# but does NOT load the vault's CLAUDE.md or rules
+alias cc='CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD=1 claude --add-dir ~/Obsidian/my-vault'
 
 # Then in any git repo:
 cc
 ```
+
+**Important**: `--add-dir` alone only gives Claude file access to the vault. To also load the vault's CLAUDE.md and `.claude/rules/`, you must set `CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD=1`. The alias above handles this.
 
 This lets Claude reference vault knowledge (concept notes, literature, project plans) while implementing code.
 

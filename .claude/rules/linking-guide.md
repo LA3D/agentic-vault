@@ -23,7 +23,7 @@ When processing journal entries or new notes:
 - **Implementation note** (`03 - Resources/.../Implementation/`) → links repo + concepts
 - **Daily note** → links concept work + repo paths + literature
 
-**Cross-repo bridge**: Use `claude --add-dir /path/to/vault` when working in a git repo so Claude can reference vault knowledge while implementing code.
+**Cross-repo bridge**: Use `CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD=1 claude --add-dir /path/to/vault` when working in a git repo. The env var is required to load the vault's CLAUDE.md and rules — without it, `--add-dir` only provides file access.
 
 ---
 
