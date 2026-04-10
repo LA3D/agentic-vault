@@ -105,13 +105,26 @@ You say: "Create a concept note about Y"
 
 ---
 
-## The Frontier: Wake-Sleep Consolidation
+## Memory Consolidation: Auto Dream
 
-All of the vault's memory is currently **Phase 1** — external files loaded into the context window at runtime. The LLM's pre-trained knowledge (Phase 2 — model weights) doesn't change based on your vault.
+Episodic memory accumulates noise over time — contradictory entries, stale debugging notes, relative dates that lose meaning. Claude Code's **Auto Dream** feature addresses this by running a consolidation cycle between sessions, analogous to REM sleep in biological memory systems.
 
-The hypothesis (motivated by complementary learning systems theory from neuroscience): mature agent memory systems will develop a consolidation pathway where frequently-used procedural patterns migrate from external context (Phase 1) into model weights (Phase 2), freeing context budget and making those patterns intrinsic.
+Auto Dream runs automatically when two conditions are met: 24 hours since last consolidation AND 5+ sessions since last consolidation. It follows four phases:
 
-This doesn't exist yet for any agent system. But it's why the vault's memory is structured the way it is — the explicit, inspectable, file-based Phase 1 is the right place to accumulate knowledge until Phase 2 consolidation becomes possible.
+1. **Orient** — read current memory directory, understand what exists
+2. **Gather signal** — search session transcripts (JSONL) for corrections, decisions, recurring patterns
+3. **Consolidate** — merge new signal into topic files, convert relative dates to absolute, delete contradicted facts, remove stale entries
+4. **Prune and index** — update MEMORY.md to stay under 200 lines, remove stale pointers, add new ones
+
+Check if Auto Dream is active: run `/memory` in a Claude Code session and look for "Auto-dream: on."
+
+The vault's `/memory-audit` skill complements Auto Dream by providing manual audit capabilities: coverage testing (are high-frequency access patterns served by memory?), compression (shrink oversized files), and trajectory analysis (what files does the agent actually access most, measured from JSONL session logs).
+
+See `03 - Resources/context/claude-code-auto-dream-docs.md` for the full Auto Dream documentation.
+
+### The Longer Horizon: Weight Consolidation
+
+Auto Dream consolidates within Phase 1 (external files). The deeper hypothesis: eventually, frequently-used procedural patterns will migrate from external context into model weights (Phase 2), freeing context budget and making those patterns intrinsic. This doesn't exist yet — but the vault's structured, inspectable Phase 1 memory is the right substrate for accumulating knowledge until Phase 2 consolidation becomes possible.
 
 ---
 
@@ -139,3 +152,4 @@ This doesn't exist yet for any agent system. But it's why the vault's memory is 
 - `03 - Resources/context/claude-code-memory-docs.md` — Official Claude Code memory system docs
 - `03 - Resources/context/claude-code-skills-docs.md` — Official Claude Code skills system docs
 - `03 - Resources/context/claude-code-extensions-docs.md` — When to use rules vs skills vs hooks
+- `03 - Resources/context/claude-code-auto-dream-docs.md` — Auto Dream consolidation feature
