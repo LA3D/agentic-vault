@@ -75,7 +75,7 @@ The vault stores your working style in several places, each serving a different 
 |------|-----------------|---------------|
 | `.claude/rules/owner-context.md` | Interaction style — how Claude talks to you, what to explain vs. assume, your expertise level | Edit directly or re-run `/onboarding` |
 | `03 - Resources/context/ai_ese.md` | Writing patterns to avoid — what makes text feel artificial *to you* | Add patterns that bother you, remove ones you don't care about |
-| `03 - Resources/context/writing_style_guide.md` | Positive style preferences — how you want prose and code written | Customize for your voice and domain conventions |
+| `03 - Resources/context/fastai_style_guide.md` | Coding style — brevity, naming, layout (optional, customizable) | Adopt what resonates, replace for your domain |
 | `.claude/rules/discipline-gates.md` | Verification checkpoints — which shortcuts to block | Adjust gate strictness to match your risk tolerance |
 
 Claude reads these every session. They're the "personality layer" of the vault — the same structural skills (encode, retrieve, review) behave differently based on these preferences.
@@ -103,5 +103,5 @@ Start with the defaults, then refine as you notice patterns that bother you. The
 - `.claude/skills/research-session/SKILL.md` — The 5-mode research session structure
 - `.claude/skills/session-retro/SKILL.md` — End-of-session reflection pattern
 - `03 - Resources/context/ai_ese.md` — AI writing patterns to avoid (customize)
-- `03 - Resources/context/writing_style_guide.md` — Positive style preferences (customize)
+- `03 - Resources/context/fastai_style_guide.md` — Coding style guide (optional, customizable)
 - [[Vault Architecture]] — How the skill layers implement a cognitive architecture

@@ -133,7 +133,25 @@ Ask what external tools they use (don't push paid tools):
 
 **Action**: Note their tool choices in owner-context.md. If they have tools that need skills installed, point them to the Integration Ecosystem doc and relevant skill installation.
 
-### Step 6: Verification and Next Steps
+### Step 6: Writing and Coding Style
+
+The vault ships with two optional style guides that change how Claude writes:
+
+> "The vault includes style guides that shape how I write notes and code. These reduce the editing you'll need to do by preventing common AI writing patterns. They're optional — want me to walk you through them?"
+
+**If they want to review:**
+- Show a brief summary of `03 - Resources/context/ai_ese.md` — explains AI-ese patterns (inflated importance, hedge phrases, excessive lists) and why avoiding them reduces your review burden
+- Show a brief summary of `03 - Resources/context/fastai_style_guide.md` — brevity-first coding philosophy from fast.ai (Huffman coding for names, one concept per screen, comments explain *why* not *what*)
+
+**Options:**
+1. **Adopt both** (recommended) — no changes needed, they're already active
+2. **Adopt AI-ese guide only** — most people benefit from this regardless of coding style
+3. **Skip both** — rename or delete the files; `/encode` and `/review-note` will skip style checks if the files are missing
+4. **Customize** — edit the files to match their own preferences (encouraged over time)
+
+**Action**: Note their choice in owner-context.md under Writing/Code preferences. If they skip, mention they can always re-enable later.
+
+### Step 7: Verification and Next Steps
 
 Read back a summary of what was configured:
 
