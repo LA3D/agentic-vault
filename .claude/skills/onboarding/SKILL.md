@@ -17,6 +17,33 @@ Walk a new user through vault setup via a structured interview. Populates config
 
 ---
 
+## Step 0: Environment Check
+
+Before the interview, silently check what tools are installed. Report a summary to the user:
+
+```bash
+# Run these checks and build a report
+echo "=== Environment Check ==="
+which git >/dev/null 2>&1 && echo "✓ git" || echo "✗ git (required)"
+which rg >/dev/null 2>&1 && echo "✓ ripgrep" || echo "✗ ripgrep (strongly recommended — brew install ripgrep)"
+which gh >/dev/null 2>&1 && echo "✓ gh" || echo "✗ gh (recommended — brew install gh)"
+which jq >/dev/null 2>&1 && echo "✓ jq" || echo "✗ jq (recommended — brew install jq)"
+which arq >/dev/null 2>&1 && echo "✓ jena/arq" || echo "✗ jena (needed for KG — brew install jena)"
+python3 -c "import yaml" 2>/dev/null && echo "✓ pyyaml" || echo "✗ pyyaml (needed for KG — pip install pyyaml)"
+which node >/dev/null 2>&1 && echo "✓ node" || echo "✗ node (needed for skill marketplace — brew install node)"
+which npx >/dev/null 2>&1 && echo "✓ npx" || echo "✗ npx (comes with node)"
+obsidian help >/dev/null 2>&1 && echo "✓ obsidian CLI" || echo "○ obsidian CLI (enable in Obsidian Settings → General → CLI)"
+```
+
+Present the results and offer to help install missing tools:
+
+> "Here's what I found on your system. The vault works with just git + Claude Code, but more tools unlock more capabilities. See `SETUP.md` for the full tier guide."
+
+**If critical tools are missing** (git), stop and help install them before proceeding.
+**If recommended tools are missing** (ripgrep, jena, node), note them but continue — the user can install later.
+
+---
+
 ## Interview Sequence
 
 Run these steps in order. Each step is a conversation turn — ask, wait for response, then proceed.
