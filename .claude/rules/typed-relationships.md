@@ -173,7 +173,7 @@ Follow their frontmatter edge field patterns, using `type:` (not `noteType:`).
 
 ## Vault Reference
 
-For a browsable in-vault reference, see: `[[Vault Type Taxonomy]]` in `03 - Resources/Obsidian Reference/`
+For a browsable in-vault reference, see: `[[Vault Vocabulary]]` in `03 - Resources/Obsidian Reference/`
 
 ---
 

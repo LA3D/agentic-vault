@@ -75,6 +75,6 @@ Encode handles everything else: routing, template, frontmatter, MOC wiring, veri
 
 | File | Role |
 |------|------|
-| `.claude/rules/breadcrumbs-and-typing.md` | Type taxonomy for classification |
+| `.claude/rules/typed-relationships.md` | Type taxonomy for classification |
 | `.claude/rules/linking-guide.md` | Wikilink conventions |
 | `.claude/skills/encode/SKILL.md` | Note creation pathway (delegated to) |
