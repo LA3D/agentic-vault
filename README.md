@@ -19,6 +19,39 @@ We also add a **Watching** folder (`05 - Watching/`) for items you're monitoring
 
 See [Why PARA and How We Modify It](03%20-%20Resources/Obsidian%20Reference/Why%20PARA%20and%20How%20We%20Modify%20It.md) for the full rationale, including how the Router enforces the structure.
 
+## Prerequisites
+
+You need three things before starting. Install them in order:
+
+### 1. Homebrew (macOS package manager)
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+### 2. Core tools
+```bash
+brew install git node ripgrep gh
+brew install --cask obsidian
+```
+
+### 3. Claude Code
+
+Claude Code is Anthropic's agentic coding tool — it's the AI agent that operates inside this vault. You need an **Anthropic account with a paid plan** (the [Max plan](https://www.anthropic.com/pricing) at $100/mo includes Claude Code usage; alternatively, pay per-token via the [API console](https://console.anthropic.com)).
+
+```bash
+# Install the CLI
+npm install -g @anthropic-ai/claude-code
+
+# Authenticate (follow the prompts)
+claude
+```
+
+Claude Code is also available as a [VS Code extension](https://marketplace.visualstudio.com/items?itemName=anthropic.claude-code), [JetBrains plugin](https://plugins.jetbrains.com/plugin/claude-code), [desktop app](https://claude.ai/download), or [web app](https://claude.ai/code). The CLI is recommended for this vault because skills work best in the terminal.
+
+> **See [SETUP.md](SETUP.md) for the full setup guide** — additional tiers of tools (knowledge graph pipeline, Quarto, Google Workspace integration) that Claude Code can help you install during onboarding.
+
+---
+
 ## Quick Start
 
 > **This is a GitHub template repository.** Don't clone it directly — use it to create your own repo. This keeps your vault independent with its own git history, and you won't accidentally push to the template.
