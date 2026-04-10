@@ -34,13 +34,13 @@ The recommended install is the CLI:
 
 ```bash
 # macOS / Linux
-npm install -g @anthropic-ai/claude-code
+curl -fsSL https://claude.ai/install.sh | bash
 
 # Verify
 claude --version
 ```
 
-If you don't have npm yet, install Node.js first (`brew install node`).
+See https://claude.com/product/claude-code for full install documentation.
 
 Claude Code is also available as:
 - **VS Code extension** — search "Claude Code" in the extensions marketplace
