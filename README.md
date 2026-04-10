@@ -13,30 +13,54 @@ The structure is based on the Pullein/GAPRA framework (Areas → Goals → Proje
 
 ## Quick Start
 
-### 1. Clone and open
+> **This is a GitHub template repository.** Don't clone it directly — use it to create your own repo. This keeps your vault independent with its own git history, and you won't accidentally push to the template.
 
+### 1. Create your vault from the template
+
+**Option A — GitHub web UI:**
+Click the green **"Use this template"** button at the top of this repo → "Create a new repository." Choose your own account/org, name it whatever you like (e.g., `my-vault`, `research-vault`, `knowledge-base`), and set it to private.
+
+**Option B — GitHub CLI:**
 ```bash
-git clone https://github.com/LA3D/agentic-vault.git ~/Obsidian/my-vault
-cd ~/Obsidian/my-vault
+gh repo create my-vault --template LA3D/agentic-vault --private --clone
+cd my-vault
 ```
 
-Open the folder as a vault in Obsidian.
+### 2. Choose where to put it
 
-### 2. Run onboarding
+Obsidian supports multiple vaults — each vault is just a folder. A common convention is a dedicated directory:
 
 ```bash
+# If you used Option A (web UI), clone your new repo:
+git clone git@github.com:YOUR-USERNAME/my-vault.git ~/Obsidian/my-vault
+
+# If you used Option B (CLI), it's already cloned. Move it if you like:
+mv my-vault ~/Obsidian/my-vault
+```
+
+> **Multiple vaults**: You can have separate vaults for different purposes — a research vault, a work vault, a personal vault. Each is an independent git repo. Obsidian lets you switch between them. Claude Code's `--add-dir` flag lets you reference one vault while working in another.
+
+### 3. Open in Obsidian
+
+Open Obsidian → "Open folder as vault" → select your vault directory. When prompted about community plugins, enable them (the vault uses Templater, Dataview, and Tasks).
+
+### 4. Run onboarding
+
+```bash
+cd ~/Obsidian/my-vault
 claude
 # Then in the Claude Code session:
 # /onboarding
 ```
 
 The onboarding skill will:
+- Check your installed tools and suggest what to add (see [SETUP.md](SETUP.md))
 - Interview you (name, role, expertise, preferences)
 - Help you define your areas of focus
 - Ask for your knowledge graph namespace
 - Configure your dev environment path
 
-### 3. Start working
+### 5. Start working
 
 Create your first project, capture a concept, or start a research session:
 - `/encode` — create any type of note
