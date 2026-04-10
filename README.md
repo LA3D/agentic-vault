@@ -168,6 +168,8 @@ scripts/kg/build-graph.sh --stats
 
 - **Two-Level Planning**: Vault-level plans are strategic (goals, research questions). Repo-level plans are tactical (implementation). Bridge them with `claude --add-dir /path/to/vault`.
 
+- **Cognitive Load Management**: AI agents can intensify work faster than you realize ([Ranganathan & Ye, 2026](https://simonwillison.net/2026/Feb/9/ai-intensifies-work/)). The vault's session modes, discipline gates, and retro patterns impose sustainable rhythm on AI-assisted work. See [Managing Cognitive Load](03%20-%20Resources/Obsidian%20Reference/Managing%20Cognitive%20Load%20with%20AI%20Agents.md).
+
 - **The Encode Pipeline**: All note creation goes through `/encode`, which routes to the right location, applies the right template, wires into MOCs, and verifies before committing.
 
 ## Core Skills

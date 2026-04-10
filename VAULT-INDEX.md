@@ -38,6 +38,7 @@ Knowledge organized by topic. Each topic area has a MOC (Map of Content) as its 
 
 ### Vault Reference
 - [[Why PARA and How We Modify It]] — Why this structure, what we changed, how the Router enforces it
+- [[Managing Cognitive Load with AI Agents]] — Why the vault imposes structure on AI work sessions
 - [[How Progressive Disclosure Works]] — How Claude navigates in layers
 - [[How Wikilinks Create Structure]] — How links form a traversable knowledge graph
 - [[How the Index System Works]] — The routing hierarchy explained
