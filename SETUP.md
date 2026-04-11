@@ -90,7 +90,9 @@ brew install --cask quarto
 
 ## Tier 2 — Knowledge Graph Pipeline (recommended)
 
-Enables SPARQL queries on your vault's knowledge graph — multi-hop concept traversal, orphan detection, hub analysis.
+Enables SPARQL queries on your vault's knowledge graph — multi-hop concept traversal, orphan detection, hub analysis, and **automatic enforcement of the vault's structural principles** via the `/audit` skill's Check F (Branching Factor / Fano Bound).
+
+**Why this matters**: the vault's architecture imposes specific structural constraints — bounded branching (≤12 direct children per navigational node), typed edges as operation contracts, hierarchical retrieval over flat search. These are grounded in recent research on memory architectures for language agents (Barman et al. 2026 no-escape theorem; Hu et al. 2026 xMemory Fano bound; Janowicz 2015 pattern-based architecture). The knowledge graph pipeline is what lets `/audit` check the structural integrity automatically — without it, violations accumulate silently. See the [README's "Why Structured Hierarchy?" section](README.md#why-structured-hierarchy-research-basis) for the full rationale and supporting literature, and the vault doc [Bounded Branching — Why This Skill Checks the Fano Bound](03%20-%20Resources/Obsidian%20Reference/Bounded%20Branching%20-%20Why%20This%20Skill%20Checks%20the%20Fano%20Bound.md) for the methodology details.
 
 ### Python 3 + PyYAML
 ```bash

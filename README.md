@@ -34,6 +34,37 @@ We also add a **Watching** folder (`05 - Watching/`) for items you're monitoring
 
 See [Why PARA and How We Modify It](03%20-%20Resources/Obsidian%20Reference/Why%20PARA%20and%20How%20We%20Modify%20It.md) for the full rationale, including how the Router enforces the structure.
 
+### Why Structured Hierarchy? (Research Basis)
+
+The vault does not just use PARA for organization. It imposes specific structural constraints on *how notes connect and how agents navigate them*. These constraints are grounded in recent formal and empirical research on memory architectures for language agents, and they are important enough to state explicitly:
+
+1. **Bounded branching** — every MOC section, sub-index subsection, and navigational folder keeps its direct-child count $\leq 12$. This is the Fano-inequality bound on routing reliability under a realistic mutual-information budget (~2 bits per routing decision). Above this bound, an agent navigating a node fails to pick the correct target often enough to matter — no amount of prompting fixes it.
+
+2. **Typed edges as interface operations** — edge fields (`concept:`, `extends:`, `supports:`, `criticizes:`, `source:`, `author:`) are not labels saying "these notes are related." They are *operation contracts*. `supports:` licenses evidence aggregation. `criticizes:` licenses contradiction detection. `source:` licenses grounding checks. `extends:` licenses inheritance of semantic context. Different edge types invoke different agent behavior. Aggressive typing produces a navigable knowledge graph; loose typing (everything goes under `related:`) collapses into flat similarity search.
+
+3. **Hierarchical retrieval over flat search** — progressive disclosure through VAULT-INDEX → MOC → concept → note is not a UI convenience. Flat semantic retrieval (cosine similarity over a single embedding space) has a mathematical ceiling on correctness as memory grows, and no amount of better embedding models can escape it. Typed hierarchical navigation is one of the only principled escape routes.
+
+**Supporting literature**:
+
+- **Barman et al. 2026, "The Price of Meaning"** (arXiv [2603.27116](https://arxiv.org/abs/2603.27116)) — proves a *no-escape theorem*: any memory system that retrieves by semantic similarity over a finite-dimensional embedding space cannot simultaneously eliminate forgetting and false recall as memory grows. Five architectures tested; all land on the same Pareto frontier.
+- **Barman et al. 2026, "The Geometry of Forgetting"** (arXiv [2604.06222](https://arxiv.org/abs/2604.06222)) — empirical companion showing production embedding models converge on effective dimensionality $d_{\text{eff}} \approx 16$ regardless of nominal size, which places them deep in the interference-vulnerable regime the theorem describes.
+- **Hu et al. 2026, "xMemory: Beyond RAG for Agent Memory"** (arXiv [2602.02007](https://arxiv.org/abs/2602.02007)) — Pareto-dominant empirical validation (48% fewer tokens, +21% F1 over flat RAG on LoCoMo) via hierarchical decomposition with bounded branching and active consolidation. Appendix B derives the Fano bound formally and sets the split threshold to 12.
+- **Janowicz 2015, "Ontology Engineering: A View from the Trenches"** (WOP 2015 keynote) — the 2015 independent precursor articulating a pattern-based architecture with bounded-interoperability hubs, derived from ontology engineering practice a decade before the formal theorem landed.
+- **Sumers et al. 2023, "Cognitive Architectures for Language Agents" (CoALA)** (arXiv [2309.02427](https://arxiv.org/abs/2309.02427)) — the cognitive architecture framework the vault uses to separate working, procedural, episodic, and semantic memory.
+
+**How the vault enforces this**:
+
+- The `/audit` skill's **Check F (Branching Factor)** automatically flags navigational nodes with more than 12 direct children as warnings, and more than 25 as errors — on every audit run. The check is derived from the Fano bound.
+- The `/curator` skill provides continuous consolidation (slow-cadence split/merge) analogous to xMemory's sparsity-semantics objective.
+- The `.claude/rules/typed-relationships.md` rule is loaded at session start and includes the "Edges as Interface Operations" framing so Claude Code treats edges as contracts from the first interaction.
+
+**For the full methodology**, read:
+
+- [Memory Architecture — Why Different Kinds of Memory](03%20-%20Resources/Obsidian%20Reference/Memory%20Architecture%20-%20Why%20Different%20Kinds%20of%20Memory.md) — CoALA + the Structural Constraints section with the three principles
+- [Bounded Branching — Why This Skill Checks the Fano Bound](03%20-%20Resources/Obsidian%20Reference/Bounded%20Branching%20-%20Why%20This%20Skill%20Checks%20the%20Fano%20Bound.md) — the formal Fano derivation, xMemory evidence, no-escape argument, and what to do when the check fires
+
+**Why the vault is self-enforcing**: if the structure drifts (a MOC section accumulates 40 entries, a folder grows to 150 files), the `/audit` skill flags it on the next run. The tooling catches violations of the principles the research argues for — so the vault stays consistent with its own thesis as it grows.
+
 ## Prerequisites
 
 You need three things before starting. Install them in order:
@@ -180,9 +211,11 @@ scripts/kg/build-graph.sh --stats
 
 - **Four Memory Types**: The vault implements a cognitive architecture (CoALA, Sumers et al. 2023) with four distinct kinds of memory: working memory (CLAUDE.md + rules), procedural memory (skills), episodic memory (auto memory + daily notes), and semantic memory (typed vault notes + knowledge graph). They're separate because they have different access patterns, lifespans, and costs. See [Memory Architecture](03%20-%20Resources/Obsidian%20Reference/Memory%20Architecture%20-%20Why%20Different%20Kinds%20of%20Memory.md).
 
-- **Progressive Disclosure**: Claude navigates in layers (VAULT-INDEX → MOC → note), not by reading everything. See [How Progressive Disclosure Works](03%20-%20Resources/Obsidian%20Reference/How%20Progressive%20Disclosure%20Works.md).
+- **Bounded Branching (Fano Bound)**: Every MOC section, sub-index subsection, and navigational folder keeps its direct-child count ≤12 — the information-theoretic limit on routing reliability derived from Fano's inequality (Hu et al. 2026 xMemory). The `/audit` skill's Check F flags violations automatically. See [Bounded Branching — Why This Skill Checks the Fano Bound](03%20-%20Resources/Obsidian%20Reference/Bounded%20Branching%20-%20Why%20This%20Skill%20Checks%20the%20Fano%20Bound.md).
 
-- **Typed Relationships**: Frontmatter edge fields (`up:`, `concept:`, `source:`, `extends:`, etc.) create a knowledge graph that Claude can query via SPARQL. See [Vault Vocabulary](03%20-%20Resources/Obsidian%20Reference/Vault%20Vocabulary.md).
+- **Progressive Disclosure**: Claude navigates in layers (VAULT-INDEX → MOC → note), not by reading everything. This is a structural requirement, not a UI preference — flat semantic retrieval has a formal ceiling on correctness (Barman et al. 2026 no-escape theorem) that typed hierarchical navigation escapes. See [How Progressive Disclosure Works](03%20-%20Resources/Obsidian%20Reference/How%20Progressive%20Disclosure%20Works.md).
+
+- **Typed Relationships as Interface Operations**: Frontmatter edge fields (`up:`, `concept:`, `source:`, `extends:`, `supports:`, `criticizes:`, `author:`) are not labels — they are *operation contracts* that define what agents do when traversing them. `supports:` licenses evidence aggregation; `criticizes:` licenses contradiction detection; `source:` licenses grounding checks. Different edge types invoke different agent behavior. See [Vault Vocabulary](03%20-%20Resources/Obsidian%20Reference/Vault%20Vocabulary.md) and the [typed-relationships rule](.claude/rules/typed-relationships.md).
 
 - **Two-Level Planning**: Vault-level plans are strategic (goals, research questions). Repo-level plans are tactical (implementation). Bridge them with `--add-dir` (see Cross-Repo Workflow below).
 
