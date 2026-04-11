@@ -232,6 +232,92 @@ git log --diff-filter=M --name-only --since="6 months ago" --pretty=format: -- "
 
 Report count and percentage. Over 30% stale → **Info**.
 
+### Check F: Branching Factor (Fano Bound)
+
+**Theoretical basis**: Hierarchical navigation has a formal information-theoretic ceiling on branching factor derived from **Fano's inequality**. With a realistic mutual-information budget of ~2 bits per routing decision, to achieve <15% routing error the branching factor $n_k$ at each level must satisfy:
+
+$$n_k \leq 2^{(B+1)/0.85} \approx 11.5$$
+
+**Empirical evidence**: [Hu et al. 2026 (xMemory)](https://arxiv.org/abs/2602.02007) uses a split threshold of 12 and produces an average branching factor of ~4.5 in practice. **Nodes with more than ~12 direct children are routing-unreliable** — an agent navigating such a node faces a classification problem the mutual information budget cannot solve. This applies to **any hierarchical navigation structure**: MOC sections, index subsections, folders treated as namespaces, and concept hubs.
+
+See `[[Bounded Branching - Why This Skill Checks the Fano Bound]]` in `03 - Resources/Obsidian Reference/` for the full background and methodology rationale.
+
+**Why we check this**: a vault that violates this principle in its own navigation structure is inconsistent with the structure-first memory thesis it implements. Check F surfaces violations as structural-integrity warnings so the curator (human or AI) can act on them.
+
+**F1. MOC Section Branching** — Count direct `- [[` entries per `##` heading in MOC files:
+
+```bash
+# For each MOC, count entries per top-level section heading
+for moc in $(find "03 - Resources/" -name "*MOC*.md"); do
+    echo "=== $moc ==="
+    awk '
+        /^## / { section=$0; count=0; next }
+        /^- \[\[/ { count++ }
+        END { if (section) print section ": " count }
+    ' "$moc"
+done
+```
+
+Alternative quick check:
+```bash
+# Total direct entries per MOC file
+for moc in $(find "03 - Resources/" -name "*MOC*.md"); do
+    total=$(grep -c "^- \[\[" "$moc")
+    echo "$moc: $total entries"
+done
+```
+
+**Severity mapping**:
+- $n_k > 12$: **Warning** — Fano bound exceeded; routing becomes unreliable
+- $n_k > 25$: **Error** — routing is effectively broken; split immediately
+- $n_k > 50$: **Error (critical)** — the node functions as a flat index, not a hub; the pattern layer is absent
+
+**F2. Sub-Index Branching** — Count entries per section in LITERATURE-INDEX, PEOPLE-INDEX, or other sub-indexes:
+
+```bash
+# Count entries per ### subsection in LITERATURE-INDEX
+awk '
+    /^### / { if (section) print section ": " count; section=$0; count=0; next }
+    /^- \[\[/ { count++ }
+    END { if (section) print section ": " count }
+' "03 - Resources/Literature/LITERATURE-INDEX.md"
+```
+
+Apply the same severity thresholds as F1. Over-bound sub-sections are candidates for splitting into further subsections with more specific headings.
+
+**F3. Folder-Level Branching** — Folders treated as navigational namespaces (e.g., `Literature/`, any thematic topic folder) should be checked for child count:
+
+```bash
+for dir in "03 - Resources/Literature" \
+           "03 - Resources/People" \
+           $(find "03 - Resources/" -type d -not -path "*/Obsidian Reference*" -mindepth 1 -maxdepth 2); do
+    count=$(ls "$dir"/*.md 2>/dev/null | wc -l | tr -d ' ')
+    if [ "$count" -gt 12 ]; then
+        echo "$dir: $count files"
+    fi
+done
+```
+
+Folders serving as flat namespaces with more than ~50 direct children are in **critical** territory. They should be split into topical subfolders or replaced with sub-indexes that structure the children into bounded groups.
+
+**F4. Concept Node In-Degree** — Concept notes that serve as hubs for many incoming edges are also subject to the Fano bound on the *reverse* direction: an agent navigating incoming references must solve a classification problem over the neighbors. Count `concept:` incoming edges per concept:
+
+```bash
+arq --data=scripts/kg/vault-graph-full.ttl --query=<(cat <<'SPARQL'
+PREFIX vault: <https://example.com/vault/ontology#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+SELECT ?conceptTitle (COUNT(?source) AS ?incoming) WHERE {
+    ?source vault:concept ?concept .
+    ?concept dcterms:title ?conceptTitle .
+} GROUP BY ?conceptTitle
+HAVING (COUNT(?source) > 12)
+ORDER BY DESC(?incoming)
+SPARQL
+)
+```
+
+Concept notes with >12 incoming `concept:` references are candidates for splitting into sub-concepts or promoting to a MOC with explicit intermediate structure.
+
 ### Report Format
 
 ```
@@ -257,12 +343,14 @@ Top violations: ...
 ### Errors
 1. **[Type]** N notes with non-canonical types: transcription (N), daily (N), ...
 2. **[Hierarchy]** N notes missing required `up:` field
+3. **[Branching]** N nodes over the critical Fano bound (>25 direct children)
 
 ### Warnings
 1. **[Orphans]** N notes (X%) with no incoming edges
 2. **[Dangling]** N real broken references (excluding N Readwise phantoms)
 3. **[Template]** N notes missing expected fields for their type
 4. **[Cold Areas]** N areas with 0 notes serving them
+5. **[Branching]** N nodes over the Fano bound (>12 direct children) — routing-unreliable per the structure-first memory thesis. See `[[Bounded Branching - Why This Skill Checks the Fano Bound]]`.
 
 ### Info
 1. **[Readwise]** N phantom references (twitter: N, kindle: N, ...)
@@ -319,6 +407,7 @@ For each changed `.md` file, read frontmatter and check:
 | Expected fields? | Check against type template | Warning if missing |
 | Edge targets valid? | For `concept:`, `source:`, `extends:` — verify target notes exist and have appropriate types | Warning if domain/range mismatch |
 | Orphan? | Grep vault for wikilinks to this note | Info if 0 incoming |
+| Branching impact? | If the change added to a MOC section or index, re-check that node's branching factor against Fano bound ($n_k \leq 12$) | Warning if push above bound; Error if above 25 |
 | Discoverable? | Count incoming links | Info if <3 |
 
 ### Step 3: Session Coherence

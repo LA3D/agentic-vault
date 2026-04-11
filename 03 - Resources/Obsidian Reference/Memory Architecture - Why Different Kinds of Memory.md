@@ -78,6 +78,50 @@ Source: Sumers, T.R., Yao, S., Narasimhan, K., & Griffiths, T.L. (2023). "Cognit
 
 ---
 
+## Structural Constraints on Semantic Memory
+
+CoALA tells you *which* memory types a language agent needs. It does not tell you *how to structure them so retrieval stays correct as they grow*. That second question is where the structural constraints of this vault come from, and they are important enough to be their own section.
+
+**The short version**: as semantic memory grows, **flat retrieval** (cosine similarity over a single embedding space) hits a mathematical ceiling on correctness that cannot be engineered away by better models or more training. The ceiling is real, it is provable, and it applies to every memory architecture that retrieves by meaning without external grounding. The only escape is **hierarchical retrieval with bounded branching** — the same pattern this vault uses for MOCs, sub-indexes, and typed edges.
+
+Three specific structural principles follow:
+
+### Principle 1 — Bounded branching (the Fano bound)
+
+Every navigation node (a MOC section, an index subsection, a folder treated as a namespace) has a maximum branching factor beyond which an agent cannot reliably pick the right child from a query. The information-theoretic bound is $n_k \leq 12$ at each level (derived from Fano's inequality applied to routing-as-classification with ~2 bits of mutual information per step). Above this, routing error grows quickly; below it, error stays bounded regardless of total vault size.
+
+**Practical consequence**: if a MOC section has 40 direct entries, split it into subsections. If a folder has 150 files, split into subfolders or introduce a sub-index. The vault's `/audit` skill checks this automatically (Check F — Branching Factor) and flags violations as warnings or errors.
+
+See `[[Bounded Branching - Why This Skill Checks the Fano Bound]]` for the full methodology argument.
+
+### Principle 2 — Typed edges as interface operations
+
+Edge fields (`concept:`, `extends:`, `supports:`, `criticizes:`, `source:`, `author:`) are not just labels that say "these notes are related." They are **operation contracts** that tell the agent what kind of traversal to perform and what to expect at the target. `extends:` expects a parent concept; `supports:` licenses evidence aggregation; `criticizes:` licenses contradiction detection; `source:` licenses grounding checks against the cited work.
+
+**Practical consequence**: populate edge fields with the most specific type you can justify. Treat `related:` as a fallback for edges that don't yet have a specific semantic contract. Aggressive typing produces a more navigable knowledge graph than loose typing because each typed edge is an independent dimension for retrieval — unlike flat similarity where everything collapses to one scalar distance.
+
+See `.claude/rules/typed-relationships.md` for the full edge vocabulary and the "Edges as Interface Operations" framing.
+
+### Principle 3 — Hierarchical retrieval over flat search
+
+Progressive disclosure through MOCs and sub-indexes is not a UI convenience; it is a **structural requirement for agent reliability** at scale. An agent navigating `VAULT-INDEX → MOC → concept → note` is operating outside the flat-retrieval regime where the Fano bound applies catastrophically. An agent running a single cosine-similarity query against the entire vault is inside that regime.
+
+**Practical consequence**: build new material via hierarchical navigation paths. When creating a note, populate `up:` to place it in the hierarchy. When retrieving knowledge, prefer the indexed path (`obsidian search` from a MOC) over a flat content query.
+
+### Where these principles come from
+
+These are not ad-hoc design choices. They are grounded in a convergence of recent work on memory architectures for agents:
+
+- **Formal theory**: The "no-escape theorem" (Barman et al., 2026, arXiv:2603.27116) proves that flat semantic retrieval over a finite-dimensional embedding space cannot simultaneously eliminate forgetting and false recall as memory grows. The only escape routes are (1) abandon meaning entirely, (2) add external symbolic grounding, or (3) make the semantic space infinite-dimensional (impossible for natural language). Typed hierarchical structure is option 2 realized.
+- **Empirical validation**: xMemory (Hu et al., 2026, arXiv:2602.02007) demonstrates Pareto-dominant retrieval (48% fewer tokens with +21% F1 over flat RAG) via exactly this pattern: hierarchical decomposition, bounded branching, active consolidation. Appendix B of the paper derives the Fano bound ($n_k \leq 12$) formally.
+- **Independent precursor**: Janowicz (2015, WOP keynote) articulated the pattern-based architecture — repositories with local ontologies linked through a shared pattern layer, with semantic signatures providing bottom-up structure discovery — a decade earlier, from ontology engineering practice.
+
+The vault implements the engineering consequence: typed edges, bounded branching, hierarchical navigation, active curation. The `/audit` skill enforces the structural constraints; the `/curator` skill evolves the vocabulary; the knowledge graph makes the structure queryable.
+
+**The short version of the short version**: flat search doesn't scale. Typed hierarchy does. This vault is built for typed hierarchy on purpose.
+
+---
+
 ## How They Work Together
 
 A typical interaction involves all four memory types:

@@ -43,6 +43,26 @@ Literature notes use `type: literature-note` with an optional `literatureType:` 
 
 ---
 
+## Edges as Interface Operations (Not Just Labels)
+
+**Conceptual framing, important for how to use this vocabulary well.**
+
+A typed edge is not a label that says "these two things are related." It is an **interface contract** that defines an *operation* the agent should perform when it traverses the edge. Each edge type has an expected behavior, an expected target type, and a semantic commitment that shapes how downstream retrieval and reasoning should handle it.
+
+This framing matters because:
+
+1. **Different edge types license different retrievals.** When an agent sees `extends:`, it expects the parent to supply inherited semantic context. When it sees `criticizes:`, it expects to find an unresolved contradiction that should trigger conflict-resolution logic before combining evidence. `supports:` licenses evidence aggregation; `criticizes:` licenses contradiction detection; `source:` licenses grounding checks. **These are not equivalent relationships with different names** — they invoke different operations.
+
+2. **The set of edge types is an orthogonal basis.** Every typed edge you add is a new independent dimension along which notes can be navigated and compared. Unlike flat similarity retrieval (where everything collapses to one scalar distance), typed edges preserve separable semantic directions. This is why aggressive typing (minimize use of `related:`) produces a more navigable knowledge graph than loose typing.
+
+3. **Edge types have domain and range.** `author:` points to a person; `source:` points to a literature note; `extends:` points to a theory or concept note. Violating the domain/range of an edge breaks the operation contract: an `extends:` pointing at an organization node has no meaningful operation an agent can run.
+
+The practical guideline: **populate edge fields with the most specific type you can justify, and treat `related:` as a fallback for edges that don't have a specific semantic contract yet**. Over time, `related:` uses should become rarer as the edge vocabulary evolves to fit the work.
+
+See `[[Bounded Branching - Why This Skill Checks the Fano Bound]]` in `03 - Resources/Obsidian Reference/` for the structural reason typed edges matter: they are what keeps the vault's navigation outside the no-escape regime that flat retrieval falls into.
+
+---
+
 ## Edge Fields
 
 Populate these in YAML frontmatter to create typed relationships. Each field maps to an RDF property via `scripts/kg/vault-context.jsonld` and becomes queryable in the vault's knowledge graph:

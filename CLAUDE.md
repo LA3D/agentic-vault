@@ -20,6 +20,14 @@ A **linked knowledge system** organized around Areas of Focus (Pullein/GAPRA fra
 
 **Memory design**: This vault implements four memory types from the CoALA cognitive architecture (Sumers et al. 2023): working memory (CLAUDE.md + rules), procedural memory (skills), episodic memory (auto memory + daily notes), semantic memory (typed vault notes + KG). See `[[Memory Architecture - Why Different Kinds of Memory]]` for why they're separate and how they work together.
 
+**Structural principles**: The semantic memory layer is built under three constraints grounded in formal theory and empirical validation (Barman 2026, Hu 2026, Janowicz 2015):
+
+1. **Bounded branching** — every MOC section, sub-index subsection, and navigational folder keeps its direct-child count $\leq 12$ (the Fano bound on routing reliability). The `/audit` skill checks this automatically (Check F).
+2. **Typed edges as interface operations** — edge fields (`concept:`, `extends:`, `supports:`, `criticizes:`, `source:`, `author:`) are not labels; they are operation contracts that tell agents what to do when traversing. Aggressive typing produces a navigable knowledge graph; loose typing collapses into flat similarity search.
+3. **Hierarchical retrieval over flat search** — progressive disclosure (VAULT-INDEX → MOC → concept → note) is structural, not cosmetic. Flat semantic retrieval has a mathematical ceiling on correctness that typed hierarchical navigation escapes.
+
+See `[[Bounded Branching - Why This Skill Checks the Fano Bound]]` for the methodology rationale, and the "Structural Constraints on Semantic Memory" section of the Memory Architecture doc for the research basis.
+
 ---
 
 ## Navigation [CRITICAL]
