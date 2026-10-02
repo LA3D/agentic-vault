@@ -14,7 +14,7 @@ Cross-skill enforcement patterns. These rationalizations and gate definitions ap
 | "I have enough sources" | Minimum 3 for synthesis. Query vault-kg. Single-source "synthesis" is paraphrasing. | obsidian-research-synthesis, research-session |
 | "Good enough to commit" | Read it back first. Verification-before-completion is non-negotiable. | All skills with commit steps |
 | "I'll update the MOC/index separately" | Unindexed notes are invisible. Update in the same session. | All note-creation skills |
-| "I already know this note is good" | You wrote it. Same blind spots. Run `/review-note --draft` — it's cheap. | encode, batch ingest skills |
+| "I already know this note is good" | You wrote it. Same blind spots. Apply Review Note criteria; substantive captures require an independent reviewer. | encode, batch ingest skills |
 | "These notes all agree" | You read them in the same session with the same mental model. Check `concept:` neighbors for silent contradictions. | retrieve, obsidian-research-synthesis |
 
 ---
@@ -44,8 +44,8 @@ Skills that depend on other skills. When a upstream skill runs, the downstream s
 
 | When this runs... | ...this MUST also run | Why |
 |---|---|---|
-| `/encode` (note creation) | `/review-note --draft` on the created note | Catch structural errors and silent contradictions before commit |
-| Batch ingest (e.g., Readwise, Zotero import, manual capture) | `/review-note --draft` on each created note | Ingest is the highest-risk moment for contradiction introduction |
+| `/encode` (note creation) | Focused inline Review Note checks for bounded edits; independent Review Note for substantive capture | Catch structural errors and silent contradictions before commit |
+| Batch ingest (e.g., Readwise, Zotero import, manual capture) | Review Note criteria on each created note; one independent review can cover a coherent substantive batch | Ingest is the highest-risk moment for contradiction introduction |
 | `/obsidian-research-synthesis` | `/review-note --final` on the synthesis note | Synthesis compounds errors from sources — needs adversarial review |
 | `/retrieve` (loading context) | Contradiction scan across loaded notes | Don't build on inconsistent foundations — check before presenting |
 | `/session-retro` | `/audit session` on notes touched this session | End-of-session structural health check |
@@ -69,7 +69,7 @@ When working on ANY note-creation or knowledge-capture task:
 1. **Before creating**: Did I search for existing coverage? (Design gate)
 2. **During creating**: Am I using canonical types, proper edge fields, correct location? (Inline discipline)
 3. **After creating**: Did I read it back and verify? (Verification gate)
-4. **After verifying**: Did I run `/review-note --draft`? (Review gate)
+4. **After verifying**: Did I apply the scoped Review Note criteria and complete independent review when substantive? (Review gate)
 5. **Before committing**: Are MOCs/indexes updated? Are all links valid? (Commit gate)
 
 If you catch yourself thinking any phrase from the rationalization table above, that's the signal to slow down and follow the gate, not skip it.

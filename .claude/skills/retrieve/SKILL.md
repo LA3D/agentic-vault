@@ -45,7 +45,7 @@ If the graph is older than the most recent git commit (or older than 1 hour), tr
 scripts/kg/rebuild-async.sh
 ```
 
-While the rebuild runs in the background (~6s), proceed with text search (`obsidian search` or grep). Use SPARQL results when they arrive. If the graph doesn't exist at all, fall back entirely to text search.
+If launching the rebuild in the background, proceed with filesystem search and wait for successful completion before using its SPARQL results. A busy lock does not establish freshness. If the graph is unavailable, continue through filesystem reads/search.
 
 **Consistency note**: Audit *waits* for the rebuild (it needs accurate structural counts). Retrieve *proceeds* without waiting (it can supplement SPARQL with text search). This asymmetry is intentional — Audit needs precision, Retrieve needs responsiveness.
 
@@ -78,9 +78,9 @@ While the rebuild runs in the background (~6s), proceed with text search (`obsid
 
 2. **SPARQL concept neighborhood** — find notes connected to matching concepts (uses `vq:concept-neighborhood` from `scripts/kg/vault-queries.ttl`).
 
-3. **Text search** — `obsidian search vault="obsidian" query="TOPIC" limit=15` (or grep fallback). Catches body-text mentions that SPARQL misses.
+3. **Text search** — `obsidian search query="TOPIC" limit=15` (or grep fallback). Catches body-text mentions that SPARQL misses.
 
-4. **Merge and rank**: Deduplicate by title. Rank by:
+4. **Merge and rank**: Deduplicate by vault-relative path. Rank by:
    - **Tier 1**: Concept/theory notes about the topic (they synthesize)
    - **Tier 2**: Method/finding notes (they provide evidence)
    - **Tier 3**: Literature notes referencing the topic
@@ -113,7 +113,7 @@ While the rebuild runs in the background (~6s), proceed with text search (`obsid
 
 4. **Rank**: Direct edges (1-hop) first, shared-concept notes (2-hop) second. Within each tier, rank by type relevance (concept > theory > literature > external).
 
-5. **Sparse results fallback**: If SPARQL returns fewer than 8 notes (common for notes with few typed edges), supplement with text search: `obsidian search vault="obsidian" query="ANCHOR_TITLE_KEYWORDS" limit=15`. Merge with SPARQL results, deduplicating by title.
+5. **Sparse results fallback**: If SPARQL returns fewer than 8 notes (common for notes with few typed edges), supplement with text search: `obsidian search query="ANCHOR_TITLE_KEYWORDS" limit=15`. Merge with SPARQL results, deduplicating by vault-relative path.
 
 6. **Build manifest**. Cap at 20 entries.
 
@@ -121,34 +121,14 @@ While the rebuild runs in the background (~6s), proceed with text search (`obsid
 
 ## Exploratory Mode
 
-**Intent**: "What connects to X that I haven't seen?" — discovery through graph traversal.
-
-### Pipeline
-
-1. **Resolve anchor URI** (same as Contextual Step 2).
-
-2. **Cold neighbors** — SPARQL for underexplored notes in the neighborhood (uses `vq:cold-neighbors`). These are notes with <5 inbound edges — connected but not well-known.
-
-3. **Cross-MOC bridges** — SPARQL for notes in other MOCs that reference this note's MOC (uses `vq:cross-moc-bridges`). These reveal unexpected connections across domains.
-
-4. **Dangling concepts** — check the anchor's neighborhood for edge targets that have no `rdf:type` (they're referenced but don't exist as notes). These are knowledge gaps worth filling:
-   ```bash
-   arq --data=scripts/kg/vault-graph-full.ttl --query=<(cat <<'SPARQL'
-   PREFIX vault: <https://example.com/vault/ontology#>
-   PREFIX dcterms: <http://purl.org/dc/terms/>
-   SELECT DISTINCT ?target WHERE {
-       <NOTE_URI> ?pred ?target .
-       FILTER(?pred IN (vault:concept, vault:related, vault:extends))
-       FILTER(isIRI(?target))
-       FILTER NOT EXISTS { ?target a ?type }
-   }
-   SPARQL
-   )
-   ```
-
-5. **Build manifest** with annotations: each entry tagged as "cold node", "cross-MOC bridge", or "missing concept". Cap at 15 entries.
-
----
+Read VAULT-INDEX, follow relevant sub-indexes/MOCs, then read individual notes.
+Use filesystem search (`rg`) for alternative terms when routing is insufficient.
+Retain vault-relative paths so duplicate titles remain distinct sources. Obsidian
+CLI is optional for application behavior; basic retrieval does not require it.
+Gather a bounded set of notes and explain substantive connections. Graph queries
+may supplement content retrieval, but graph freshness is not a retrieval blocker.
+For topology, hub/cold-neighbor/cross-MOC analysis, concept clustering, or concrete
+restructuring proposals, use `/curator analyze`. Retrieval remains read-only.
 
 ## Manifest Format
 
@@ -238,7 +218,7 @@ arq --data=scripts/kg/vault-graph-full.ttl --query=<(echo 'PREFIX dcterms: <http
 
 | File | Role | When to read |
 |------|------|-------------|
-| `scripts/kg/vault-queries.ttl` | SPARQL query catalog (41 queries) | To find or customize queries |
+| `scripts/kg/vault-queries.ttl` | SPARQL query catalog (18 queries) | To find or customize queries |
 | `scripts/kg/vault-graph-full.ttl` | Materialized RDF graph | Data source for all SPARQL queries |
 | `scripts/kg/rebuild-async.sh` | Background graph rebuild | When graph is stale |
 | `.claude/rules/vault-navigation.md` | Progressive disclosure protocol | For navigation context |
