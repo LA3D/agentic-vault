@@ -273,3 +273,17 @@ The vault is a central processing hub. External tools feed information in. See [
 ## License
 
 MIT
+
+### Curator restructuring workflow
+
+`/curator` runs audit → analyze → review → evolve. Analysis combines fresh graph
+queries with actual index/MOC section counts and note reading. It produces exact
+entry mappings, source-grounded concept outlines, and canonical link destinations
+for ambiguous titles before requesting new decisions. Approved changes preserve
+source bodies and descriptions, use Encode/Review Note for synthesis, and finish
+with membership/link checks and one graph rebuild. Already approved decisions
+carry forward. See the [bounded resource index template](Templates/Bounded%20Resource%20Index.md).
+
+Run `bash scripts/kg/rebuild-async.sh` for a lock-protected graph build and SHACL
+summary. It requires Python 3 + PyYAML and Apache Jena tools on PATH. Wait for its
+successful completion before structural analysis; a busy lock is not success.

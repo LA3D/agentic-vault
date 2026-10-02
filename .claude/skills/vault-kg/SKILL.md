@@ -5,7 +5,7 @@ description: "Query the vault's knowledge graph via raw SPARQL — multi-hop rel
 
 # Vault Knowledge Graph — Semantic Navigation Skill
 
-Query the vault's typed relationships as a SPARQL knowledge graph. The graph is built from YAML frontmatter via a JSON-LD pipeline, producing ~9000 base triples + ~500 materialized triples from 670+ notes.
+Query the vault's typed relationships as a SPARQL knowledge graph. The graph is built from YAML frontmatter via a JSON-LD pipeline, producing a generated graph whose size depends on the notes in your vault.
 
 ## When to use this vs other tools
 
@@ -19,6 +19,7 @@ Query the vault's typed relationships as a SPARQL knowledge graph. The graph is 
 
 ```
 scripts/kg/
+├── rebuild-async.sh          # Lock-protected build + validation summary
 ├── build-graph.sh            # Full pipeline: extract → convert → materialize → validate
 ├── vault-to-jsonld.py        # Batch processor (Python)
 ├── vault-context.jsonld      # @context mapping frontmatter → RDF
@@ -31,7 +32,7 @@ scripts/kg/
 └── validation-report.ttl     # SHACL validation report (gitignored, generated)
 ```
 
-Tools: `arq`, `riot`, `shacl` (Apache Jena 6.0.0, all at `/opt/homebrew/bin/`)
+Tools on PATH: Python 3 with PyYAML, and Apache Jena (`arq`, `riot`, `shacl`).
 
 ## Step 1: Ensure the graph is fresh
 
@@ -47,7 +48,7 @@ bash scripts/kg/build-graph.sh --stats              # full (with validation)
 bash scripts/kg/build-graph.sh --stats --skip-validate  # faster (skip SHACL)
 ```
 
-Pipeline takes ~8-9 seconds. Always query `vault-graph-full.ttl` (includes materialized inverse edges, area inheritance, hub detection).
+Wait for successful build completion; runtime depends on vault size. Always query `vault-graph-full.ttl` (includes materialized inverse edges, area inheritance, hub detection).
 
 ## Step 2: Run queries
 

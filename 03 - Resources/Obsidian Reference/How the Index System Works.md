@@ -95,3 +95,17 @@ The discipline gate in `.claude/rules/discipline-gates.md` includes: "I'll updat
 - **MOCs are curated, sub-indexes are exhaustive** — different purposes
 - **One MOC per topic area** — stored in `03 - Resources/[topic-folder]/[Topic] MOC.md`
 - **Agent Navigation Notes** section in MOCs (5-10 lines max) — breadcrumbs from Claude's explorations that help future sessions navigate faster
+
+## Restructuring a growing index
+
+Use `Templates/Bounded Resource Index.md` as an adaptable eight-section example.
+The parent offers eight choices; each subsection holds at most 12 direct entries.
+Nested guides remain under their original entry and count at their own level.
+Use your own categories and material rather than treating the example as an ontology.
+
+Run `/curator` for audit → analyze → review → evolve. Before approving a split,
+review an exact entry mapping, before/after counts, and any ambiguous note scopes.
+After approval, preserve descriptions and bodies, resolve references by path,
+verify membership and links, and rebuild the graph once. New substantive concepts
+use Encode and an independent Review Note pass. Complete queue items individually;
+keep unresolved proposals visible.
